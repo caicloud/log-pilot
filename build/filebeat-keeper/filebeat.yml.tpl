@@ -2,6 +2,9 @@ http.enabled: true
 http.host: 0.0.0.0
 http.port: 5066
 
+queue.mem:
+  events: {{ if .queueEvents }}{{ .queueEvents }}{{ else }}8192{{ end }}
+
 filebeat.config:
   inputs:
     enabled: true
@@ -107,4 +110,7 @@ output.logstash:
     {{- if .loadbalance }}
     loadbalance: {{- if eq .loadbalance "true"}}true{{- else }}false{{- end }}
     {{- end }}
+    worker: {{ if .worker }}{{ .worker }}{{ else }}4{{ end }}
+    pipelining: {{ if .pipelining }}{{ .pipelining }}{{ else }}3{{ end }}
+    bulk_max_size: {{ if .bulkMaxSize }}{{ .bulkMaxSize }}{{ else }}4096{{ end }}
 {{- end }}
